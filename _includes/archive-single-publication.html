@@ -1,0 +1,51 @@
+{% include base_path %}
+
+<div class="pub__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+
+    {% comment %} ---------- Thumbnail ---------- {% endcomment %}
+    <div class="pub__thumb">
+      {% if post.thumbnail %}
+        {% if post.thumbnail contains "://" %}
+          {% assign thumb_url = post.thumbnail %}
+        {% else %}
+          {% assign thumb_url = post.thumbnail | prepend: "/images/publications/" | prepend: base_path %}
+        {% endif %}
+        <a href="{{ base_path }}{{ post.url }}"><img src="{{ thumb_url }}" alt="{{ post.title | escape }}"></a>
+      {% endif %}
+    </div>
+
+    {% comment %} ---------- Text + buttons ---------- {% endcomment %}
+    <div class="pub__body">
+      <div class="pub__title">
+        <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ post.title }}</a>
+      </div>
+
+      {% if post.authors %}
+        <div class="pub__authors">{{ post.authors }}</div>
+      {% endif %}
+
+      <div class="pub__venue">
+        {% if post.venue %}{{ post.venue }}{% endif %}
+        {% if post.date %} {{ post.date | default: "1900-01-01" | date: "%Y" }}{% endif %}
+        {% if post.status %} {{ post.status }}{% endif %}
+      </div>
+
+      <div class="pub__buttons">
+        {% if post.paperurl %}
+          <a class="pub__btn" href="{% if post.paperurl contains '://' %}{{ post.paperurl }}{% else %}{{ post.paperurl | prepend: base_path }}{% endif %}" target="_blank" rel="noopener">Pdf</a>
+        {% endif %}
+        {% if post.bibtexurl %}
+          <a class="pub__btn" href="{% if post.bibtexurl contains '://' %}{{ post.bibtexurl }}{% else %}{{ post.bibtexurl | prepend: base_path }}{% endif %}" target="_blank" rel="noopener">BibTex</a>
+        {% endif %}
+        {% if post.code %}
+          <a class="pub__btn" href="{{ post.code }}" target="_blank" rel="noopener">Code</a>
+        {% endif %}
+        {% if post.demo %}
+          <a class="pub__btn" href="{{ post.demo }}" target="_blank" rel="noopener">Demo</a>
+        {% endif %}
+      </div>
+    </div>
+
+  </article>
+</div>

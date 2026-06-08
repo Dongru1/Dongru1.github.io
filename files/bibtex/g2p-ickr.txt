@@ -1,0 +1,8 @@
+@inproceedings{han2024improving,
+  title={Improving grapheme-to-phoneme conversion through in-context knowledge retrieval with large language models},
+  author={Han, Dongrui and Cui, Mingyu and Kang, Jiawen and Wu, Xixin and Liu, Xunying and Meng, Helen},
+  booktitle={2024 IEEE 14th International Symposium on Chinese Spoken Language Processing (ISCSLP)},
+  pages={631--635},
+  year={2024},
+  organization={IEEE}
+}
