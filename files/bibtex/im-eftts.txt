@@ -1,0 +1,9 @@
+@inproceedings{han26d_interspeech,
+  title     = {{Imitation Learning for Elder-Facing Speech Synthesis}},
+  author    = {Dongrui Han and Weidong Chen and Jiawen Kang and Mingyu Cui and Helen Meng and Xixin Wu},
+  year      = {2026},
+  booktitle = {{Interspeech 2026}},
+  pages     = {7592--7597},
+  doi       = {10.21437/Interspeech.2026-2107},
+  issn      = {2958-1796},
+}
