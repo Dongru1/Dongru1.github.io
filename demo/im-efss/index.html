@@ -192,6 +192,47 @@
       margin-right: 6px;
       vertical-align: middle;
     }
+    @media (max-width: 960px) {
+      body { padding: 12px; }
+      section.card { padding: 16px; }
+      .comp-table thead { display: none; }
+      .comp-table,
+      .comp-table tbody,
+      .comp-table tr,
+      .comp-table td {
+        display: block;
+        width: 100%;
+      }
+      .comp-table tr {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 14px;
+        padding: 10px 12px;
+      }
+      .comp-table td {
+        border: none;
+        text-align: left;
+        padding: 6px 0;
+        max-width: none;
+        background: transparent;
+      }
+      .comp-table tr:nth-child(even) td,
+      .comp-table tr:hover td { background: transparent; }
+      .comp-table td:not(:first-child)::before {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: #888;
+        margin-bottom: 2px;
+      }
+      .comp-table td:nth-child(2)::before { content: "Ground Truth"; }
+      .comp-table td:nth-child(3)::before { content: "CosyVoice2-Yue"; }
+      .comp-table td:nth-child(4)::before { content: "SFT"; }
+      .comp-table td:nth-child(5)::before { content: "GRPO w/o OPRL"; }
+      .comp-table td:nth-child(6)::before { content: "GRPO w/o OPRL S1"; }
+      .comp-table td:nth-child(7)::before { content: "GRPO w/o OPRL S2"; }
+      .comp-table audio { width: 100%; max-width: 100%; }
+    }
 
     /* ── Pairwise Section ── */
     h2.pair-heading { border-bottom-color: #e67e22; }
