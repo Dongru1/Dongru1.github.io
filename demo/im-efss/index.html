@@ -333,7 +333,7 @@
   <div class="rh-plot">
     <img src="asset/images/mel_pitch_100_m_b.png" alt="GRPO with OPRL Stage 2 mel-spectrogram. Original RM 3.496, OPRL RM 0.905">
     <div class="rh-playhead"></div>
-    <audio preload="none" src="asset/audio/reward_hacking_comparing/grpo_w_oprl.mp3"></audio>
+    <audio preload="none" src="asset/audio/reward_hacking_comparing/grpo_w_oprl.mp3?v=2"></audio>
   </div>
   <div class="rh-controls">
     <button type="button" class="rh-play" aria-label="Play"></button>
@@ -344,7 +344,7 @@
   <div class="rh-plot">
     <img src="asset/images/mel_pitch_100_m_c.png" alt="GRPO without OPRL mel-spectrogram. Original RM 3.670, OPRL RM 0.353">
     <div class="rh-playhead"></div>
-    <audio preload="none" src="asset/audio/reward_hacking_comparing/grpo_wo_oprl.mp3"></audio>
+    <audio preload="none" src="asset/audio/reward_hacking_comparing/grpo_wo_oprl.mp3?v=2"></audio>
   </div>
   <div class="rh-controls">
     <button type="button" class="rh-play" aria-label="Play"></button>
@@ -485,12 +485,38 @@
     var btn = row.querySelector(".rh-play");
     var timeEl = row.querySelector(".rh-time");
     var dragging = false;
+    var rafId = 0;
 
-    function render() {
-      var dur = audio.duration;
-      timeEl.textContent = fmt(audio.currentTime) + " / " + fmt(isFinite(dur) ? dur : 0);
+    function placeHead() {
       head.style.left = (timeToFrac(audio.currentTime) * 100) + "%";
       plot.classList.add("is-ready");
+    }
+
+    function renderTime() {
+      var dur = audio.duration;
+      timeEl.textContent = fmt(audio.currentTime) + " / " + fmt(isFinite(dur) ? dur : 0);
+    }
+
+    function render() {
+      renderTime();
+      placeHead();
+    }
+
+    function tick() {
+      placeHead();
+      if (!audio.paused && !audio.ended) rafId = requestAnimationFrame(tick);
+      else rafId = 0;
+    }
+
+    function startFollow() {
+      if (rafId) return;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function stopFollow() {
+      if (!rafId) return;
+      cancelAnimationFrame(rafId);
+      rafId = 0;
     }
 
     function setPlaying(on) {
@@ -499,17 +525,18 @@
     }
 
     audio.addEventListener("loadedmetadata", render);
-    audio.addEventListener("timeupdate", render);
+    audio.addEventListener("timeupdate", renderTime);
     audio.addEventListener("seeked", render);
-    audio.addEventListener("ended", function () { setPlaying(false); render(); });
-    audio.addEventListener("pause", function () { setPlaying(false); });
-    audio.addEventListener("error", function () { setPlaying(false); });
+    audio.addEventListener("ended", function () { stopFollow(); setPlaying(false); render(); });
+    audio.addEventListener("pause", function () { stopFollow(); setPlaying(false); placeHead(); });
+    audio.addEventListener("error", function () { stopFollow(); setPlaying(false); });
     audio.addEventListener("play", function () {
       rows.forEach(function (other) {
         var otherAudio = other.querySelector("audio");
         if (otherAudio !== audio && !otherAudio.paused) otherAudio.pause();
       });
       setPlaying(true);
+      startFollow();
     });
 
     btn.addEventListener("click", function () {
